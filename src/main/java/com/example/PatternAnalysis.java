@@ -1,9 +1,12 @@
 package com.example;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-class PatternAnalysis implements Runnable {
+class PatternAnalysis implements Runnable { // Implement Runnable
     private SharedLinkedList sharedList;
     private String searchPattern;
 
@@ -16,7 +19,7 @@ class PatternAnalysis implements Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(5000); // Configurable interval
+                Thread.sleep(5000); // Run every 5 seconds
                 analyzePattern();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -24,9 +27,9 @@ class PatternAnalysis implements Runnable {
         }
     }
 
-    private void analyzePattern() {
+    public synchronized void analyzePattern() {
         Map<String, Integer> bookPatternCounts = new HashMap<>();
-        // Traverse the shared list to count occurrences of the pattern for each book title
+        
         synchronized (sharedList) {
             SharedLinkedList.Node current = sharedList.getHead();
             while (current != null) {
@@ -37,10 +40,18 @@ class PatternAnalysis implements Runnable {
                 current = current.next;
             }
         }
-        
-        System.out.println("Analyzing pattern: \"" + searchPattern + "\"");
-        bookPatternCounts.entrySet().stream()
-            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())) // Sort by frequency
-            .forEach(entry -> System.out.println("Book: " + entry.getKey() + " | Occurrences: " + entry.getValue()));
+
+        if (!bookPatternCounts.isEmpty()) {
+            List<Map.Entry<String, Integer>> sortedBooks = new ArrayList<>(bookPatternCounts.entrySet());
+            sortedBooks.sort(Comparator.comparingInt((Map.Entry<String, Integer> entry) -> entry.getValue()).reversed());
+            
+            System.out.println("\nBook titles sorted by most frequent occurrences of pattern:");
+            int rank = 1;
+            for (Map.Entry<String, Integer> entry : sortedBooks) {
+                System.out.printf("%d --> Book: %s, Pattern: \"%s\", Frequency: %d%n",
+                        rank, entry.getKey(), searchPattern, entry.getValue());
+                rank++;
+            }
+        }
     }
 }

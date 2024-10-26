@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 
 public class MultiThreadedServer {
 
-    private static final int PORT = 1234; // Port to listen on
+    private static final int PORT = 12345; // Port to listen on
     private static final int MAX_THREADS = 100; // Limit of concurrent connections
     private static ExecutorService threadPool = Executors.newFixedThreadPool(MAX_THREADS);
 

@@ -4,7 +4,6 @@ class SharedLinkedList {
     private Node head;
 
     public synchronized void addNode(String data, String bookTitle) {
-        System.out.println("Adding node with data: " + data);
         Node newNode = new Node(data, bookTitle);
         if (head == null) {
             head = newNode;
@@ -15,7 +14,6 @@ class SharedLinkedList {
             }
             temp.next = newNode;
         }
-        System.out.println("Added new node for book: " + bookTitle);
     }
     
     public synchronized int countPatternOccurrences(String pattern, String bookTitle) {

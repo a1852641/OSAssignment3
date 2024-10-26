@@ -12,7 +12,7 @@ class ClientHandler implements Runnable {
     private static int bookCount = 0;
     private SharedLinkedList sharedList;
 
-    public ClientHandler(Socket socket, SharedLinkedList sharedList) {
+    public ClientHandler(Socket socket, SharedLinkedList sharedList) { // Constructor matching parameters
         this.clientSocket = socket;
         this.sharedList = sharedList;
     }
@@ -29,8 +29,7 @@ class ClientHandler implements Runnable {
                     title = line;
                 }
                 bookContent.append(line).append("\n");
-                sharedList.addNode(line, title); // Add line to shared list
-                System.out.println("Received line: " + line);
+                sharedList.addNode(line, title);
             }
 
             writeBookToFile(title, bookContent.toString());
