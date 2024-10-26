@@ -1,6 +1,6 @@
 all:
 	javac -d bin src/main/java/com/example/*.java
-	jar cvfe assignment3.jar com.example.Main -C bin .
+	jar cvfe assignment3.jar com.example.MultiThreadedServer -C bin .
 
 clean:
-	rm -rf bin/*.class assignment3.jar
+	rm -rf bin/com/example/*.class assignment3.jar

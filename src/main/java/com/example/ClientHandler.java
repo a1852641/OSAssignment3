@@ -9,10 +9,12 @@ import java.net.Socket;
 
 class ClientHandler implements Runnable {
     private Socket clientSocket;
-    private static int bookCount = 0; // Keep track of books processed
+    private static int bookCount = 0;
+    private SharedLinkedList sharedList;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, SharedLinkedList sharedList) {
         this.clientSocket = socket;
+        this.sharedList = sharedList;
     }
 
     @Override
@@ -24,11 +26,11 @@ class ClientHandler implements Runnable {
 
             while ((line = in.readLine()) != null) {
                 if (title.isEmpty()) {
-                    title = line; // First line as book title
+                    title = line;
                 }
                 bookContent.append(line).append("\n");
-                // Add the line to the shared linked list here (not shown)
-                System.out.println("Received: " + line);
+                sharedList.addNode(line, title); // Add line to shared list
+                System.out.println("Received line: " + line);
             }
 
             writeBookToFile(title, bookContent.toString());
