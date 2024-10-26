@@ -11,10 +11,12 @@ class ClientHandler implements Runnable {
     private Socket clientSocket;
     private static int bookCount = 0;
     private SharedLinkedList sharedList;
+    private int connectionId;
 
-    public ClientHandler(Socket socket, SharedLinkedList sharedList) { // Constructor matching parameters
+    public ClientHandler(Socket socket, SharedLinkedList sharedList) {
         this.clientSocket = socket;
         this.sharedList = sharedList;
+        this.connectionId = ++bookCount; // Unique ID per connection
     }
 
     @Override
@@ -26,7 +28,7 @@ class ClientHandler implements Runnable {
 
             while ((line = in.readLine()) != null) {
                 if (title.isEmpty()) {
-                    title = line;
+                    title = line + " [Connection " + connectionId + "]"; // Add unique ID to title
                 }
                 bookContent.append(line).append("\n");
                 sharedList.addNode(line, title);
@@ -39,8 +41,7 @@ class ClientHandler implements Runnable {
     }
 
     private synchronized void writeBookToFile(String title, String content) throws IOException {
-        bookCount++;
-        String fileName = String.format("book_%02d.txt", bookCount);
+        String fileName = String.format("book_%02d.txt", connectionId);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write("Title: " + title + "\n\n");
             writer.write(content);

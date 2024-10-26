@@ -14,6 +14,7 @@ class SharedLinkedList {
             }
             temp.next = newNode;
         }
+
     }
     
     public synchronized int countPatternOccurrences(String pattern, String bookTitle) {

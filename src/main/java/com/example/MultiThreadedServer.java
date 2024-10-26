@@ -24,7 +24,7 @@ public class MultiThreadedServer {
         SharedLinkedList sharedList = new SharedLinkedList();
 
         ServerSocket serverSocket = new ServerSocket(PORT);
-        System.out.println("Server started. Listening on port: " + PORT);
+        System.out.println("Server started. Listening on port: " + port);
 
         // Start pattern analysis thread(s)
         PatternAnalysis patternAnalysis = new PatternAnalysis(sharedList, searchPattern);

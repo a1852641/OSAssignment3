@@ -49,7 +49,7 @@ class PatternAnalysis implements Runnable { // Implement Runnable
             int rank = 1;
             for (Map.Entry<String, Integer> entry : sortedBooks) {
                 System.out.printf("%d --> Book: %s, Pattern: \"%s\", Frequency: %d%n",
-                        rank, entry.getKey(), searchPattern, entry.getValue());
+                rank, entry.getKey().replaceAll("\\[Connection \\d+\\]", "").trim(), searchPattern, entry.getValue());
                 rank++;
             }
         }
